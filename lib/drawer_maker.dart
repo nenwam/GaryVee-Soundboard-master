@@ -1,14 +1,22 @@
+// Flutter Imports
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:audioplayer/audioplayer.dart';
-import 'package:path/path.dart';
-
 import 'package:test_soundboard_app/main.dart';
-import 'package:test_soundboard_app/soundplayer.dart';
-import 'package:test_soundboard_app/soundstorage.dart';
 
-class DrawerMaker extends StatelessWidget
+class DrawerMaker extends StatefulWidget
 {
+  DrawerMaker({ Key key }) : super(key: key);
+  State<StatefulWidget> createState() => new _DrawerMaker();
+}
+
+
+
+class _DrawerMaker extends State<DrawerMaker>
+{
+  // Instance Variables
+  HomePage main = new HomePage();
+  SoundBoardApp home = new SoundBoardApp();
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -17,6 +25,7 @@ class DrawerMaker extends StatelessWidget
             children: <Widget>[
               new ListTile(
                 onTap: () { 
+                  Navigator.of(context).pop();
                   Navigator.of(context).pushReplacementNamed("/a");
                 },
                 title: new Text(
@@ -31,6 +40,7 @@ class DrawerMaker extends StatelessWidget
               new Divider(),
               new ListTile(
                 onTap: () { 
+                  Navigator.of(context).pop();
                   Navigator.of(context).pushReplacementNamed("/b"); 
                 },
                 title: new Text(
@@ -45,6 +55,7 @@ class DrawerMaker extends StatelessWidget
               new Divider(),
               new ListTile(
                 onTap: () { 
+                  Navigator.of(context).pop();
                   Navigator.of(context).pushReplacementNamed("/c");
                   //TODO: Add route for this page
                 },
@@ -59,7 +70,8 @@ class DrawerMaker extends StatelessWidget
               ),
               new Divider(),
               new ListTile(
-                onTap: () { 
+                onTap: () {
+                  Navigator.of(context).pop(); 
                   Navigator.of(context).pushReplacementNamed("/d");
                   //TODO: Add route for this page
                 },
@@ -75,6 +87,7 @@ class DrawerMaker extends StatelessWidget
               new Divider(),
               new ListTile(
                 onTap: () { 
+                  Navigator.of(context).pop();
                   Navigator.of(context).pushReplacementNamed("/e");
                   //TODO: Add route for this page
                 },

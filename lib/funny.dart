@@ -1,9 +1,9 @@
+// Flutter Imports
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
+// Package Imports
 import 'package:test_soundboard_app/drawer_maker.dart';
-import 'package:test_soundboard_app/soundplayer.dart';
-import 'package:test_soundboard_app/soundstorage.dart';
 import 'package:test_soundboard_app/make_button.dart';
 
 
@@ -16,39 +16,14 @@ class Funny extends StatefulWidget
 class _Funny extends State<Funny>
 {
 
+  // Instance Variables
   MediaQueryData queryData;
+  final double SWMULTIPLIER = .95;
 
-  SoundPlayer player;
-
-  List<String> soundFilePath;
-
+  // Methods
   @override
   void initState() {
     super.initState();
-    player = new SoundPlayer();
-  }
-
-
-
-  Widget getFuture(){
-    return new FutureBuilder<List<String>>(
-      future: new SoundStorage().loadSounds(),
-      builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting: return new Text('Awaiting result...');
-          default:
-            if (snapshot.hasError)
-              return new Text('Error: ${snapshot.error}');
-            else{
-              soundFilePath = snapshot.requireData;
-              print('Loading completed. ${soundFilePath.length} sounds loaded');
-              return getLoadedBody();
-            }
-        }
-
-      },
-    );
   }
 
   @override
@@ -65,11 +40,9 @@ class _Funny extends State<Funny>
             ),
         centerTitle: true,
         ),
-
         //Drawer
         endDrawer: DrawerMaker(),
-
-      body: getFuture()
+      body: getLoadedBody()
     );
   }
 
@@ -77,9 +50,9 @@ class _Funny extends State<Funny>
   void dispose() {
     super.dispose();
     queryData = MediaQuery.of(context);
-    player.dispose();
   }
 
+  // Builds on screen elements
   Widget getLoadedBody(){
 
     final space = Padding(padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 32.0));
@@ -109,7 +82,7 @@ class _Funny extends State<Funny>
           child: FittedBox(
             fit: BoxFit.cover,
             child: Container(
-              width: queryData.size.width,
+              width: queryData.size.width * SWMULTIPLIER,
               child: Column(children: <Widget>[
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
                 MakeButton(buttonWidth, buttonHeight, 'Turns Me On', 'sounds/misc/really_turns_me_on.mp3'),
@@ -146,12 +119,9 @@ class _Funny extends State<Funny>
               ],),
             ])
             )
-            
           )
           ),
         )
-        
-        
       ]);
    
     }

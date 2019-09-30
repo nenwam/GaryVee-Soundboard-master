@@ -1,12 +1,20 @@
+// Flutter Imports
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:ui';
+
+// Plugin Imports
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:test_soundboard_app/ad_count_manager.dart';
+
+// Package Imports
 import 'package:test_soundboard_app/drawer_maker.dart';
 import 'package:test_soundboard_app/responses.dart';
 import 'package:test_soundboard_app/curse_words.dart';
 import 'package:test_soundboard_app/funny.dart';
 import 'package:test_soundboard_app/sayings.dart';
-import 'dart:ui';
+
+
 
 void main() async{
   
@@ -20,15 +28,19 @@ void main() async{
 
 class SoundBoardApp extends StatelessWidget
 {
-  String version = '';
-  String appBarTitle = 'Categories';
-  String responses = 'Responses';
-  String curseWords = 'Curse Words';
+  final String version = '';
+  final String appBarTitle = 'Categories';
+  final String responses = 'Responses';
+  final String curseWords = 'Curse Words';
+  
+
+  
 
   @override
   Widget build(BuildContext context) {
     FirebaseAdMob.instance.initialize(appId: "ca-app-pub-4811755606104656~5047317200").then((response){
-      myBanner..load()..show();
+      myBottomBanner..load()..show();
+      myVideoAd..load()..show();
     });
     return MaterialApp(
       title: 'GaryVee Soundboard',
@@ -65,9 +77,6 @@ class HomePage extends StatelessWidget
           elevation: 0.0,
         ),
 
-        //Background Color
-        // backgroundColor: Colors.blueGrey,
-        
         //Drawer
         endDrawer: DrawerMaker(),
 
@@ -150,6 +159,7 @@ class HomePage extends StatelessWidget
   }
 }
 
+// Google AdMob
 MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
   keywords: <String>['garyvee', 'gary vaynerchuck', 'entrepeneurship', 'money', 'hustle', 'sneakers', 
                      'drock', 'business', 'motivational', 'motivation', 'inspirational', 'inspiration'],
@@ -161,10 +171,7 @@ MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
   testDevices: <String>[], // Android emulators are considered test devices
 );
 
-BannerAd myBanner = BannerAd(
-  // Replace the testAdUnitId with an ad unit id from the AdMob dash.
-  // https://developers.google.com/admob/android/test-ads
-  // https://developers.google.com/admob/ios/test-ads
+BannerAd myBottomBanner = BannerAd(
   adUnitId: "ca-app-pub-4811755606104656/8547578516",
   size: AdSize.smartBanner,
   targetingInfo: targetingInfo,
@@ -173,3 +180,10 @@ BannerAd myBanner = BannerAd(
   },
 );
 
+InterstitialAd myVideoAd = InterstitialAd(
+  adUnitId: "ca-app-pub-4811755606104656/9034942250",
+  targetingInfo: targetingInfo,
+  listener: (MobileAdEvent event) {
+    print("InterstitialAd event is $event");
+  },
+);
